@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/host"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:hint="输入服务器ip地址"
+            />
+        <!--<Button-->
+        <!--android:id="@+id/start_connect_server"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="7"-->
+        <!--android:text="开始连接服务器"/>-->
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/editsender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="输入发送者"
+            android:layout_weight="2"
+            />
+        <Button
+            android:id="@+id/connectbtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:text="连接"
+            />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/messageview"
+        android:layout_width="match_parent"
+        android:layout_height="400dp" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/editmessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="输入要发送的消息"
+            android:layout_weight="4"/>
+        <Button
+            android:id="@+id/sendbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="发送"
+            android:layout_weight="1"
+            />
+        <EditText
+            android:id="@+id/editreceiver"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="输入消息接收者"
+            android:layout_weight="8"/>
+    </LinearLayout>
+
+
+</LinearLayout>
