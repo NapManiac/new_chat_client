@@ -34,6 +34,7 @@ public class ChatClient {
     public void start() throws IOException {
         // 创建一个事件循环组 这是是多态的一个用法 NioEventLoopGroup的父类实现了EventLoopGroup接口
         // 应该是相当于一个线程池(组)的概念
+        // EventLoopGroup应该是一个死循环，不停的检测IO事件，处理IO事件，执行任务
         EventLoopGroup workGroup = new NioEventLoopGroup();
         try {
             // Bootstrap客户端专用，通过这个可以很方便的初始化客户端

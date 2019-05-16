@@ -44,9 +44,8 @@ public class ChatClientHandler extends ChannelInboundHandlerAdapter {
         ChatMessage cmsg = (ChatMessage)msg;
         if(cmsg.getReceiveUser().equals("")){//发给所有人
             strmsg="[全体-"+cmsg.getSendUser()+"：]"+cmsg.getMessage();
-        }else{//发给指定用户
+        }else{ //发给指定用户
             strmsg="[私聊-"+cmsg.getSendUser()+"：]"+cmsg.getMessage();
-
         }
         Message message=new Message();
         message.what = Main2Activity.SHOW_MSG;

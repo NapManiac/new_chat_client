@@ -98,6 +98,7 @@ public class ChatMessage {
                 "sendUser='" + sendUser + '\'' +
                 ", receiveUser='" + receiveUser + '\'' +
                 ", message='" + message + '\'' +
+                ", messageType='" + messagetype + '\'' +
                 '}';
     }
 }
