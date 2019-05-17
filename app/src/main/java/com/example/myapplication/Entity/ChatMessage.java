@@ -1,20 +1,23 @@
 package com.example.myapplication.Entity;
 
-import org.msgpack.annotation.Index;
-import org.msgpack.annotation.Message;
+import android.util.Log;
+
+import com.example.myapplication.Coder.Util;
+
+import java.io.UnsupportedEncodingException;
 
 /**
  * 消息实体类，协议
  */
-@Message  // 为了防止消息无法被序列化编码
+
 public class ChatMessage {
-    @Index(0)  // @Index()标签表明数据的顺序
+
     private String sendUser;
-    @Index(1)
+
     private String receiveUser;
-    @Index(2)
+
     private String message;
-    @Index(3)
+
     private int messagetype;//1:初始化认证消息，2：聊天消息
 
     public ChatMessage() { // 空参构造
@@ -25,6 +28,75 @@ public class ChatMessage {
         this.receiveUser=receiveUser;
         this.message=message;
         this.messagetype=messagetype;
+    }
+
+    public byte[] encode() throws UnsupportedEncodingException {
+        int totalLength = sendUser.getBytes("UTF-8").length + receiveUser.getBytes("UTF-8").length + message.getBytes("UTF-8").length + 4 + 3;
+        byte[] buffer = new byte[totalLength];
+        int offset = 0;
+
+        // copy send user to buffer
+        System.arraycopy(sendUser.getBytes("UTF-8"), 0, buffer, offset, sendUser.length());
+        offset += sendUser.getBytes("UTF-8").length;
+
+        // copy sign to buffer
+        buffer[offset++] = ':';
+
+        System.arraycopy(receiveUser.getBytes("UTF-8"), 0, buffer, offset, receiveUser.length());
+        offset += receiveUser.getBytes("UTF-8").length;
+
+        // copy sign to buffer
+        buffer[offset++] = ':';
+
+        System.arraycopy(message.getBytes("UTF-8"), 0, buffer, offset, message.length());
+        offset += message.getBytes("UTF-8").length;
+
+        // copy sign to buffer
+        buffer[offset++] = ':';
+
+        byte[] messageTypeBuffer = Util.int2bytes(messagetype);
+        System.arraycopy(messageTypeBuffer, 0, buffer, offset, 4);
+
+        return buffer;
+    }
+
+    public void decode(byte[] buffer) throws UnsupportedEncodingException {
+        Log.i("ChatMessage", new String(buffer, "UTF-8"));
+        int start_pos = 0;
+        int end_pos = 0;
+        // decode send user
+
+        for (; end_pos < buffer.length; end_pos++) {
+            if (buffer[end_pos] == ':') {
+                break;
+            }
+        }
+        sendUser = new String(buffer, start_pos, end_pos - start_pos, "UTF-8");
+
+
+        start_pos = end_pos + 1;
+        end_pos = start_pos;
+        for (; end_pos < buffer.length; end_pos++) {
+            if (buffer[end_pos] == ':') {
+                break;
+            }
+        }
+        Log.i("ChatMessage", start_pos + ", " + end_pos);
+        receiveUser = new String(buffer, start_pos, end_pos - start_pos, "UTF-8");
+
+
+        start_pos = end_pos + 1;
+        end_pos = start_pos;
+        for (; end_pos < buffer.length; end_pos++) {
+            if (buffer[end_pos] == ':') {
+                break;
+            }
+        }
+        message = new String(buffer, start_pos, end_pos - start_pos, "UTF-8");
+
+        start_pos = end_pos + 1;
+        messagetype = Util.bytes2int(buffer, start_pos);
+
     }
 
     /**
@@ -92,13 +164,4 @@ public class ChatMessage {
         this.messagetype = messagetype;
     }
 
-    @Override
-    public String toString() {
-        return "ChatMessage{" +
-                "sendUser='" + sendUser + '\'' +
-                ", receiveUser='" + receiveUser + '\'' +
-                ", message='" + message + '\'' +
-                ", messageType='" + messagetype + '\'' +
-                '}';
-    }
 }

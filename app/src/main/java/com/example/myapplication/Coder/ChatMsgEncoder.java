@@ -1,5 +1,7 @@
 package com.example.myapplication.Coder;
 
+import android.util.Log;
+
 import com.example.myapplication.Entity.ChatMessage;
 
 import io.netty.buffer.ByteBuf;
@@ -16,8 +18,9 @@ public class ChatMsgEncoder extends MessageToByteEncoder<ChatMessage> {
     protected void encode(ChannelHandlerContext channelHandlerContext, ChatMessage chatMessage, ByteBuf byteBuf) throws Exception {
         MessagePack msgpack = new MessagePack();
         // 在这里进行编码,将ChatMessage对象转换成Byte类型的数据
-        byte[] msg = msgpack.write(chatMessage);
+        byte[] msg = chatMessage.encode();
         // 将转换成的byte类型数据写入到byteBuf缓冲区中，解码器也是从这个缓冲区中读取数据再进行解码
+        Log.i("ChatMsgEncoder", "encode length" + msg.length);
         byteBuf.writeBytes(msg);
     }
 }

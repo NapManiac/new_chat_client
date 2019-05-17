@@ -24,7 +24,7 @@ public class ChatClientHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        ChatMessage msg = new ChatMessage(Main2Activity.username, "服务器","认证消息！" ,1);
+        ChatMessage msg = new ChatMessage(Main2Activity.username, "server","login！" ,1);
         Log.e(TAG, "channelActive: "+msg);
         // 向服务器发送认证消息，通知服务器新加入了一个客户端
         ctx.channel().writeAndFlush(msg);

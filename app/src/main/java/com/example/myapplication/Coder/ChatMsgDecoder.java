@@ -23,6 +23,8 @@ public class ChatMsgDecoder extends MessageToMessageDecoder<ByteBuf> {
         // 从byteBuf这个缓冲区的readerIndex()位置开始读取length个长度的字节写入到byte类型的数组中
         byteBuf.getBytes(byteBuf.readerIndex(),array,0,length);
         // 利用MessagePack().read()方法重新将byte类型的数据转换成ChatMessage对象
-        list.add(new MessagePack().read(array, ChatMessage.class));
+        ChatMessage msg = new ChatMessage();
+        msg.decode(array);
+        list.add(msg);
     }
 }
