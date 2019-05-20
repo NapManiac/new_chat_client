@@ -16,11 +16,11 @@
             android:hint="输入服务器ip地址"
             />
         <!--<Button-->
-            <!--android:id="@+id/start_connect_server"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="7"-->
-            <!--android:text="开始连接服务器"/>-->
+        <!--android:id="@+id/start_connect_server"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="7"-->
+        <!--android:text="开始连接服务器"/>-->
     </LinearLayout>
 
     <LinearLayout
@@ -71,6 +71,26 @@
             android:layout_height="wrap_content"
             android:hint="输入消息接收者"
             android:layout_weight="8"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/friend_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="输入对方昵称"
+            android:layout_weight="2"
+            />
+        <Button
+            android:id="@+id/request_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:text="添加好友"
+            />
     </LinearLayout>
 
 

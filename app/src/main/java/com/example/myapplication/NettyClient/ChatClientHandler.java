@@ -1,6 +1,7 @@
 package com.example.myapplication.NettyClient;
 
 import android.os.Bundle;
+import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
@@ -25,7 +26,7 @@ public class ChatClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         ChatMessage msg = new ChatMessage(Main2Activity.username, "server","login！" ,1);
-        Log.e(TAG, "channelActive: "+msg);
+        Log.e(TAG, "channelActive: "+ msg.toString());
         // 向服务器发送认证消息，通知服务器新加入了一个客户端
         ctx.channel().writeAndFlush(msg);
     }
@@ -47,14 +48,41 @@ public class ChatClientHandler extends ChannelInboundHandlerAdapter {
         }else{ //发给指定用户
             strmsg="[私聊-"+cmsg.getSendUser()+"：]"+cmsg.getMessage();
         }
+
         Message message=new Message();
-        message.what = Main2Activity.SHOW_MSG;
+
         Bundle bundle=new Bundle();
-        bundle.putString("msg",strmsg);
+
+        message.what = Main2Activity.SHOW_MSG;
+
         // 将Bundle对象放入message对象中，在MainActivity的Handler中通过msg这个键来获取对应的消息值
-        message.setData(bundle);
         // 刷新MainActivity界面中的显示消息的文本框
-        Main2Activity.getMainActivity().getMsghandler().sendMessage(message);
+        if (cmsg.getMessagetype() == 2) {
+            bundle.putString("msg",strmsg);
+            message.setData(bundle);
+            Main2Activity.getMainActivity().getMsghandler().sendMessage(message);
+        } else if (cmsg.getMessagetype() == 3) {
+
+            if (cmsg.getMessage().equals("request")) {
+                strmsg = cmsg.getSendUser();
+                Log.d("TAG", strmsg);
+                bundle.putString("msg",strmsg);
+                message.what = Main2Activity.FRIEND_REQUEST;
+                message.setData(bundle);
+                Main2Activity.getMainActivity().getMsghandler().sendMessage(message);
+
+            } else if (cmsg.getMessage().equals("agree")) {
+                strmsg = "[私聊-"+cmsg.getSendUser()+"：]"+ "我们已经是朋友了！";
+                bundle.putString("msg",strmsg);
+                message.setData(bundle);
+                Main2Activity.getMainActivity().getMsghandler().sendMessage(message);
+            } else if (cmsg.getMessage().equals("reject")) {
+                strmsg = "[私聊-"+cmsg.getSendUser()+"：]"+ "我拒绝了你的好友申请！";
+                bundle.putString("msg",strmsg);
+                message.setData(bundle);
+                Main2Activity.getMainActivity().getMsghandler().sendMessage(message);
+            }
+        }
     }
 
     /**

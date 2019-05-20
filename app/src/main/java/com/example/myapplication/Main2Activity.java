@@ -1,6 +1,9 @@
 package com.example.myapplication;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,13 +22,16 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
     private static final String TAG = "Main2Activity";
     public static String username;
     public static final int SHOW_MSG=1;
+    public static final int FRIEND_REQUEST = 2;
     private Button connectbtn;
     private Button sendbtn;
+    private Button requestbtn;
     private TextView messageview;
     private EditText editText;
     private EditText editsender;
     private EditText editreceiver;
     private EditText host;
+    private EditText friendName;
     //    private Button connectServer;
     // 客户端对象
     private ChatClient client;
@@ -49,18 +55,21 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         editText=(EditText)findViewById(R.id.editmessage);
         editsender=(EditText)findViewById(R.id.editsender);
         editreceiver=(EditText)findViewById(R.id.editreceiver);
+        requestbtn = findViewById(R.id.request_btn);
         host = (EditText) findViewById(R.id.host);
+        friendName = findViewById(R.id.friend_name);
         //        connectServer = (Button) findViewById(R.id.start_connect_server);
         connectbtn.setOnClickListener(this);
         sendbtn.setOnClickListener(this);
         //        connectServer.setOnClickListener(this);
+        requestbtn.setOnClickListener(this);
 
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.connectbtn:
+            case R.id.connectbtn: {
                 System.out.println("连接服务器！");
                 username = editsender.getText().toString();
                 new Thread(){
@@ -72,12 +81,24 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
                     }
                 }.start();
                 break;
-            case R.id.sendbtn:
+            }
+
+            case R.id.sendbtn: {
                 System.out.println("发送消息："+editText.getText().toString());
                 ChatMessage msg=new ChatMessage(editsender.getText().toString(), editreceiver.getText().toString(),editText.getText().toString() ,2);
                 // 向服务器发送消息
                 send(msg);
                 break;
+            }
+
+            case R.id.request_btn: {
+                Log.d("TAG", "request");
+
+                ChatMessage msg=new ChatMessage(username, friendName.getText().toString(),"request" ,3);
+                send(msg);
+
+                break;
+            }
         }
     }
 
@@ -87,7 +108,8 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
     public void connect(){
         try {
             // 创建一个ChatClient实例
-            client = new ChatClient(host.getText().toString(),8888);
+//            client = new ChatClient(host.getText().toString(),8888);
+            client = new ChatClient("192.168.1.104",8888);
             // 开始尝试连接服务器
             client.start();
         } catch (IOException e) {
@@ -111,11 +133,37 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         public void handleMessage(Message msg) {
             if(msg.what==SHOW_MSG){
                 messageview.setText(messageview.getText().toString()+msg.getData().getString("msg")+"\n");
+            } else if (msg.what == FRIEND_REQUEST) {
+                showFriendRequestAlertDialog(msg.getData().getString("msg"));
             }
         }
     };
 
     public Handler getMsghandler() {
         return msghandler;
+    }
+
+    public void showFriendRequestAlertDialog(final String name) {
+        Log.d("TAG", "进入dia");
+        AlertDialog.Builder dialog = new AlertDialog.Builder(Main2Activity.this);
+        dialog.setTitle("好友申请");
+        dialog.setMessage("对方昵称：" + name);
+        Log.d("TAG", "dialog " + name);
+        dialog.setPositiveButton("同意", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ChatMessage msg=new ChatMessage(username, name, "agree",3);
+                send(msg);
+            }
+        });
+        dialog.setNegativeButton("拒绝", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ChatMessage msg=new ChatMessage(username, name, "reject",3);
+                send(msg);
+            }
+        });
+        dialog.show();
+
     }
 }
