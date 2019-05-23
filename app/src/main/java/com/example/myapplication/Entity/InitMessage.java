@@ -1,29 +1,26 @@
 package com.example.myapplication.Entity;
 
-import android.os.Bundle;
+
 
 import com.example.myapplication.Coder.Util;
-import com.example.myapplication.Main2Activity;
 
 import java.io.UnsupportedEncodingException;
-import android.os.Message;
 
 
 
-/**
- * 消息实体类，协议
- */
-
-public class ChatMessage extends Packet{
+public class InitMessage extends Packet {
 
     private String message;
 
-
-    public ChatMessage() { // 空参构造
+    public String getMessage() {
+        return message;
     }
 
-    public ChatMessage(String sendUser, String receiveUser, String message){
-        super(Util.MSG_CHAT, sendUser, receiveUser);
+    public InitMessage() { // 空参构造
+    }
+
+    public InitMessage(String sendUser, String receiveUser, String message){
+        super( Util.MSG_INIT, sendUser, receiveUser);
         this.message=message;
 
     }
@@ -39,35 +36,15 @@ public class ChatMessage extends Packet{
         return buffer;
     }
 
-
     @Override
     public void decode(byte[] buffer) throws UnsupportedEncodingException {
         super.decodeInit(buffer);
         message = new String(buffer, getStartMsgPos(), buffer.length - getStartMsgPos(), "UTF-8");
     }
 
-    public String getMessage() {
-        return message;
-    }
-
     @Override
     public void process() {
         super.process();
-        String strMsg = "";
-        if (getReceiveUser().equals("")) {
-            strMsg="[全体-" + getSendUser() + "：]" + getMessage();
-        } else {
-            strMsg="[私聊-" + getSendUser() + "：]" + getMessage();
-        }
 
-        Message message=new Message();
-
-        Bundle bundle=new Bundle();
-
-        message.what = Main2Activity.SHOW_MSG;
-
-        bundle.putString("msg",strMsg);
-        message.setData(bundle);
-        Main2Activity.getMainActivity().getMsghandler().sendMessage(message);
     }
 }

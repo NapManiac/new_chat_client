@@ -3,7 +3,6 @@ package com.example.myapplication;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,7 +12,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.myapplication.Coder.Util;
+import com.example.myapplication.Entity.AddFriendsMessage;
 import com.example.myapplication.Entity.ChatMessage;
+import com.example.myapplication.Entity.Packet;
 import com.example.myapplication.NettyClient.ChatClient;
 
 import java.io.IOException;
@@ -84,19 +86,14 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
             }
 
             case R.id.sendbtn: {
-                System.out.println("发送消息："+editText.getText().toString());
-                ChatMessage msg=new ChatMessage(editsender.getText().toString(), editreceiver.getText().toString(),editText.getText().toString() ,2);
-                // 向服务器发送消息
+                ChatMessage msg = new ChatMessage(username, editreceiver.getText().toString(),editText.getText().toString());
                 send(msg);
                 break;
             }
 
             case R.id.request_btn: {
-                Log.d("TAG", "request");
-
-                ChatMessage msg=new ChatMessage(username, friendName.getText().toString(),"request" ,3);
+                AddFriendsMessage msg=new AddFriendsMessage(username, friendName.getText().toString(),"request");
                 send(msg);
-
                 break;
             }
         }
@@ -109,7 +106,8 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         try {
             // 创建一个ChatClient实例
 //            client = new ChatClient(host.getText().toString(),8888);
-            client = new ChatClient("192.168.1.104",8888);
+            client = new ChatClient("192.168.1.101",8888);
+            Log.d("TAG", "110");
             // 开始尝试连接服务器
             client.start();
         } catch (IOException e) {
@@ -121,7 +119,7 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
      * 发送消息
      * @param cmsg 对应的消息实体类
      */
-    public void send(ChatMessage cmsg){
+    public void send(Packet cmsg){
         client.sendMsg(cmsg);
     }
 
@@ -143,23 +141,21 @@ public class Main2Activity extends AppCompatActivity implements View.OnClickList
         return msghandler;
     }
 
-    public void showFriendRequestAlertDialog(final String name) {
-        Log.d("TAG", "进入dia");
+    public void showFriendRequestAlertDialog(final String friendName) {
         AlertDialog.Builder dialog = new AlertDialog.Builder(Main2Activity.this);
         dialog.setTitle("好友申请");
-        dialog.setMessage("对方昵称：" + name);
-        Log.d("TAG", "dialog " + name);
+        dialog.setMessage("对方昵称：" + friendName);
         dialog.setPositiveButton("同意", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                ChatMessage msg=new ChatMessage(username, name, "agree",3);
+                AddFriendsMessage msg = new AddFriendsMessage(username, friendName, "agree");
                 send(msg);
             }
         });
         dialog.setNegativeButton("拒绝", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                ChatMessage msg=new ChatMessage(username, name, "reject",3);
+                AddFriendsMessage msg = new AddFriendsMessage(username, friendName, "reject");
                 send(msg);
             }
         });

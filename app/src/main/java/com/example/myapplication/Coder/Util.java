@@ -1,7 +1,10 @@
 package com.example.myapplication.Coder;
 
-
 public class Util {
+
+	public static int MSG_INIT = 0;
+	public static int MSG_CHAT = 1;
+	public static int MSG_ADDFRIENDS = 2;
 
 	public static byte[] int2bytes(int num) {
 		byte[] data = new byte[4];
@@ -11,7 +14,7 @@ public class Util {
 		data[3] = (byte)((num >> 24) & 0xFF);
 		return data;
 	}
-
+	
 	public static int bytes2int(byte data[], int offset) {
 		int num = 0;
 		num += data[offset];

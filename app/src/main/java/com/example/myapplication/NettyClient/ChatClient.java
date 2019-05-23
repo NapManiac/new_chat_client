@@ -2,7 +2,7 @@ package com.example.myapplication.NettyClient;
 
 import android.util.Log;
 
-import com.example.myapplication.Entity.ChatMessage;
+import com.example.myapplication.Entity.Packet;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -64,7 +64,7 @@ public class ChatClient {
      * 发送消息
      * @param cmsg 要发送的消息
      */
-    public void sendMsg(ChatMessage cmsg){
+    public void sendMsg(Packet cmsg){
         // 打印要发送的消息
         Log.e(TAG, "要发送的消息:---->"+cmsg.toString());
         // 将消息写入到对于的channel连接的通道中(缓冲区)，并且刷新通道(缓冲区),将数据发送出去
