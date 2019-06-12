@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingTop="5dp"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/contacts_image"
+        android:src="@drawable/ic_user"
+        android:layout_width="80dp"
+        android:layout_height="80dp" />
+
+
+
+    <LinearLayout
+        android:id="@+id/contacts_info_linearLayout"
+        android:layout_toRightOf="@id/contacts_image"
+        android:paddingTop="5dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+        <TextView
+            android:id="@+id/contacts_name"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_weight="1.5"
+            android:textSize="20dp"
+            android:layout_height="0dp" />
+        <TextView
+            android:id="@+id/contacts_id"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/line1"
+        android:layout_below="@id/contacts_image"
+        android:layout_width="match_parent"
+        android:layout_height="7dp"
+        android:background="#babbbb" />
+
+    <TextView
+        android:id="@+id/textView_motto"
+        android:textSize="15dp"
+        android:gravity="center_vertical"
+        android:layout_below="@id/line1"
+        android:textStyle="bold"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+
+    <View
+        android:id="@+id/line2"
+        android:layout_below="@id/textView_motto"
+        android:layout_width="match_parent"
+        android:layout_height="0.2dp"
+        android:background="#babbbb" />
+
+    <TextView
+        android:id="@+id/friend_quan"
+        android:text="朋友圈"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        android:gravity="center_vertical"
+        android:layout_below="@id/line2"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+
+    <View
+        android:id="@+id/line3"
+        android:layout_below="@id/friend_quan"
+        android:layout_width="match_parent"
+        android:layout_height="7dp"
+        android:background="#babbbb" />
+
+    <Button
+        android:id="@+id/btn_agree"
+        android:layout_below="@id/line3"
+        android:text="同意"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+
+    <View
+        android:id="@+id/line4"
+        android:layout_below="@id/btn_agree"
+        android:layout_width="match_parent"
+        android:layout_height="0.2dp"
+        android:background="#babbbb" />
+
+    <Button
+        android:id="@+id/btn_reject"
+        android:layout_below="@id/line4"
+        android:text="拒绝"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
+
+    <TextView
+        android:layout_below="@id/btn_reject"
+        android:id="@+id/result"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+
+
+</RelativeLayout>

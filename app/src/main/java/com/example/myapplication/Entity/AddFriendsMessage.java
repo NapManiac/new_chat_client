@@ -4,13 +4,10 @@ import android.os.Bundle;
 import android.os.Message;
 
 import com.example.myapplication.Coder.Util;
-import com.example.myapplication.Main2Activity;
-
-
-
+import com.example.myapplication.MainActivity;
+import com.example.myapplication.NettyClient.User;
 
 import java.io.UnsupportedEncodingException;
-
 
 
 public class AddFriendsMessage extends Packet {
@@ -49,32 +46,28 @@ public class AddFriendsMessage extends Packet {
 
     @Override
     public void process() {
-        super.process();
 
-        String strMsg = "";
-        Message message=new Message();
-
-        Bundle bundle=new Bundle();
-
-        message.what = Main2Activity.SHOW_MSG;
-
+        Message message = new Message();
+        Bundle bundle = new Bundle();
+        //如果是申请的消息
         if (getMessage().equals("request")) {
-            strMsg = getSendUser();
-            bundle.putString("msg",strMsg);
-            message.what = Main2Activity.FRIEND_REQUEST;
-            message.setData(bundle);
+//            message.what = MainActivity.ADD_REQUEST;
+//            bundle.putString("id", getSendUser());
+//            message.setData(bundle);
+//            MainActivity.mainActivity.getMsghandler().sendMessage(message);
+//            User.USERINSTANCE.friendRequest.add(getSendUser());
+//            Log.d("request", getSendUser());
 
         } else if (getMessage().equals("agree")) {
-            strMsg = "[私聊-"+getSendUser()+"：]"+ "我们已经是朋友了！";
-            bundle.putString("msg",strMsg);
+            message.what = MainActivity.ADD_FRIEND;
+            bundle.putString("id", getSendUser());
             message.setData(bundle);
+            if (!User.USERINSTANCE.friendsId.contains(getSendUser())) {
 
-        } else if (getMessage().equals("reject")) {
-            strMsg = "[私聊-"+getSendUser()+"：]"+ "我拒绝了你的好友申请！";
-            bundle.putString("msg",strMsg);
-            message.setData(bundle);
+                User.USERINSTANCE.friendsId.add(getSendUser());
+                MainActivity.mainActivity.getMsghandler().sendMessage(message);
+            }
         }
-        Main2Activity.getMainActivity().getMsghandler().sendMessage(message);
 
     }
 }

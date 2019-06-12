@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:background="#babbbb"
+    android:orientation="horizontal">
+
+    <Button
+        android:id="@+id/btn_chat"
+        android:background="@android:color/darker_gray"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
+        android:text="微信"
+        android:textSize="15dp" />
+
+    <Button
+        android:id="@+id/btn_mail_list"
+        android:background="@android:color/darker_gray"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
+        android:text="通讯录"
+        android:textSize="15dp" />
+
+
+    <Button
+        android:id="@+id/btn_find"
+        android:background="@android:color/darker_gray"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
+        android:text="发现"
+        android:textSize="15dp" />
+
+    <Button
+        android:id="@+id/btn_my"
+        android:background="@android:color/darker_gray"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="bottom"
+        android:layout_weight="1"
+        android:text="我"
+        android:textSize="15dp" />
+
+</LinearLayout>

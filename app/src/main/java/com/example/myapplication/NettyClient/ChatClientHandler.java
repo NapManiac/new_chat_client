@@ -3,10 +3,8 @@ package com.example.myapplication.NettyClient;
 
 import android.util.Log;
 
-
 import com.example.myapplication.Entity.InitMessage;
 import com.example.myapplication.Entity.Packet;
-import com.example.myapplication.Main2Activity;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -25,7 +23,7 @@ public class ChatClientHandler extends ChannelInboundHandlerAdapter {
      */
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        InitMessage msg = new InitMessage(Main2Activity.username, "server", "login!");
+        InitMessage msg = new InitMessage("", "server", "login!");
         Log.e(TAG, "channelActive: "+ msg.getClass());
         // 向服务器发送认证消息，通知服务器新加入了一个客户端
         ctx.channel().writeAndFlush(msg);

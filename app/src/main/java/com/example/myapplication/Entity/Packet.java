@@ -5,10 +5,9 @@ import android.util.Log;
 import com.example.myapplication.Coder.PacketDecodeErrorException;
 import com.example.myapplication.Coder.Util;
 
+import java.io.UnsupportedEncodingException;
 
 import io.netty.channel.ChannelHandlerContext;
-
-import java.io.UnsupportedEncodingException;
 
 public class Packet {
 

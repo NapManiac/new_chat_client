@@ -1,12 +1,12 @@
 package com.example.myapplication.Entity;
 
 import android.os.Bundle;
+import android.os.Message;
 
 import com.example.myapplication.Coder.Util;
-import com.example.myapplication.Main2Activity;
+import com.example.myapplication.MainActivity;
 
 import java.io.UnsupportedEncodingException;
-import android.os.Message;
 
 
 
@@ -52,22 +52,15 @@ public class ChatMessage extends Packet{
 
     @Override
     public void process() {
-        super.process();
-        String strMsg = "";
-        if (getReceiveUser().equals("")) {
-            strMsg="[全体-" + getSendUser() + "：]" + getMessage();
-        } else {
-            strMsg="[私聊-" + getSendUser() + "：]" + getMessage();
-        }
+        String id = getSendUser();
+        String msg = getMessage();
 
-        Message message=new Message();
-
-        Bundle bundle=new Bundle();
-
-        message.what = Main2Activity.SHOW_MSG;
-
-        bundle.putString("msg",strMsg);
+        Message message = new Message();
+        Bundle bundle = new Bundle();
+        bundle.putString("sendId", id);
+        bundle.putString("msg", msg);
         message.setData(bundle);
-        Main2Activity.getMainActivity().getMsghandler().sendMessage(message);
+        message.what = MainActivity.SHOW_CHAT;
+        MainActivity.mainActivity.getMsghandler().sendMessage(message);
     }
 }

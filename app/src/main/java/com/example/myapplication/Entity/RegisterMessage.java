@@ -5,42 +5,40 @@ import android.os.Bundle;
 import android.os.Message;
 
 import com.example.myapplication.Coder.Util;
-import com.example.myapplication.LoginActivity;
+import com.example.myapplication.RegisterActivity;
 
 import java.io.UnsupportedEncodingException;
 
+public class RegisterMessage extends Packet {
 
+    private String message = "";
 
-public class InitMessage extends Packet {
+    private String id = "";
 
-    private String message;
-
-    private String id;
-
-    private String password;
+    private String password = "";
 
     public String getMessage() {
         return message;
     }
 
-    public InitMessage() { // 空参构造
+    public RegisterMessage() { // 空参构造
+        setPacketType(Util.MSG_REGISTER);
     }
 
-    public InitMessage(String sendUser, String receiveUser, String message){
-        super(Util.MSG_INIT, sendUser, receiveUser);
-        this.message=message;
-
+    public RegisterMessage(String sendUser, String receiveUser, String message){
+        super(Util.MSG_REGISTER, sendUser, receiveUser);
+        this.message = message;
     }
 
-    public InitMessage(String sendUser, String receiveUser, String id, String password) {
-        super(Util.MSG_INIT, sendUser, receiveUser);
+    public RegisterMessage(String sendUser, String receiveUser, String id, String password) {
+        super(Util.MSG_REGISTER, sendUser, receiveUser);
         this.id = id;
         this.password = password;
     }
-
     @Override
     public byte[] encode() throws UnsupportedEncodingException {
         byte[] superEncode = super.encodeInit();
+
         int superMsg = superEncode.length;
 
         //消息内容为 accout 的 长度 和 内容
@@ -68,11 +66,22 @@ public class InitMessage extends Packet {
     }
 
     @Override
+
     public void decode(byte[] buffer) throws UnsupportedEncodingException {
+//        super.decodeInit(buffer);
+//
+//        int lenId = Util.bytes2int(buffer, getStartMsgPos());//解码id长度
+//        int lenPassword = Util.bytes2int(buffer, getStartMsgPos() + 4);//解码password长度
+//
+//        int star_index = getStartMsgPos() + 8;
+//
+//        id = new String(buffer, star_index, lenId, "UTF-8");
+//
+//        password = new String(buffer, star_index + lenId, lenPassword, "UTF-8");
+
         super.decodeInit(buffer);
         message = new String(buffer, getStartMsgPos(), buffer.length - getStartMsgPos(), "UTF-8");
     }
-
     @Override
     public void process() {
         super.process();
@@ -80,12 +89,9 @@ public class InitMessage extends Packet {
         Message message=new Message();
         Bundle bundle=new Bundle();
 
-        bundle.putString("login",getMessage());
+        bundle.putString("register",getMessage());
         message.setData(bundle);
 
-        LoginActivity.getLoginActivity().getMsghandler().sendMessage(message);
-
+        RegisterActivity.getRegisterActivity().getMsghandler().sendMessage(message);
     }
-
-
 }

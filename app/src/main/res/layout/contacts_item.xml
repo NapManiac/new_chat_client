@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/contacts_adapter"
+    android:orientation="vertical"
+    android:paddingBottom="5dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <ImageView
+        android:id="@+id/contacts_image"
+        android:src="@drawable/ic_user"
+        android:layout_width="60dp"
+        android:layout_height="60dp" />
+
+    <LinearLayout
+        android:id="@+id/chat_linearLayout"
+        android:layout_toRightOf="@id/contacts_image"
+        android:paddingTop="5dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+        <TextView
+            android:id="@+id/contacts_name"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_weight="1.5"
+            android:textSize="20dp"
+            android:layout_height="0dp" />
+        <TextView
+            android:id="@+id/contacts_temp"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+    </LinearLayout>
+
+    <View
+        android:layout_below="@id/contacts_image"
+        android:layout_width="match_parent"
+        android:layout_height="0.2dp"
+        android:background="#babbbb" />
+</RelativeLayout>

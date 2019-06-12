@@ -1,5 +1,7 @@
 package com.example.myapplication.Entity;
 
+import android.util.Log;
+
 import com.example.myapplication.Coder.PacketDecodeErrorException;
 import com.example.myapplication.Coder.Util;
 
@@ -12,16 +14,25 @@ public class PacketFactory {
         Packet packet = null;
         if (messageType == Util.MSG_INIT) {
             packet = new InitMessage();
-            packet.decode(buffer);
         } else if (messageType == Util.MSG_CHAT) {
             packet = new ChatMessage();
-            packet.decode(buffer);
         } else if (messageType == Util.MSG_ADDFRIENDS) {
             packet = new AddFriendsMessage();
-            packet.decode(buffer);
-        } else {
+        } else if (messageType == Util.MSG_REGISTER) {
+            packet = new RegisterMessage();
+        } else if (messageType == Util.MSG_SEARCH_FRIEND) {
+            packet = new SearchMessage();
+        } else if (messageType == Util.MSG_USER_INFO) {
+            packet = new UserInfoMessage();
+        } else if (messageType == Util.MSG_INIT_REQUEST_INFO) {
+            packet = new InitRequestMessage();
+        }
+
+        else {
             throw new PacketDecodeErrorException("没有该子类");
         }
+        Log.d("type", String.valueOf(messageType));
+        packet.decode(buffer);
         return packet;
     }
 }
