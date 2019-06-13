@@ -93,6 +93,10 @@ public class AddFriendActivity extends BaseActivity {
                     AddFriendsMessage addFriendsMessage = new AddFriendsMessage(id, friendId,"request");
                     client.sendMsg(addFriendsMessage);
                     Toast.makeText(AddFriendActivity.this, "已发送申请！", Toast.LENGTH_SHORT).show();
+                    if (User.USERINSTANCE.friendsId.contains(friendId)) {
+                        Toast.makeText(AddFriendActivity.this, "好友已存在！", Toast.LENGTH_SHORT).show();
+
+                    }
                 }
             }
         });

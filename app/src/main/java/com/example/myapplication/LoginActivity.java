@@ -58,6 +58,16 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (!this.isTaskRoot()) {Intent mainIntent = getIntent();
+            String action = mainIntent.getAction();
+            if (mainIntent.hasCategory(Intent.CATEGORY_LAUNCHER) && action.equals(Intent.ACTION_MAIN)) {
+                finish();
+                return;
+            }
+        }
+
+
         setContentView(R.layout.activity_login);
 
 
@@ -149,8 +159,8 @@ public class LoginActivity extends BaseActivity {
         try {
             // 创建一个ChatClient实例
 //            client = new ChatClient(host.getText().toString(),8888);
-            client = new ChatClient("192.168.1.101",8888);
-//            client = new ChatClient("192.168.1.107",8888);
+//            client = new ChatClient("192.168.1.101",8888);
+            client = new ChatClient("94.191.64.27",8888);
             // 开始尝试连接服务器
             client.start();
         } catch (IOException e) {

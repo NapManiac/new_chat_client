@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -36,6 +37,9 @@ public class ChatWithOthersActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_with_others);
+        NotificationManager manager = (NotificationManager) getSystemService
+                (NOTIFICATION_SERVICE);
+        manager.cancel(1);
         final Intent intent = getIntent();
         final String friendId = intent.getStringExtra("id");
 
@@ -57,6 +61,8 @@ public class ChatWithOthersActivity extends BaseActivity {
         msgRecyckerView.setLayoutManager(linearLayoutManager);
         adapter = new MsgAdapter(msgList);
         msgRecyckerView.setAdapter(adapter);
+
+        msgRecyckerView.scrollToPosition(msgList.size() - 1);
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

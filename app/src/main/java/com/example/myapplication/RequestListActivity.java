@@ -39,12 +39,17 @@ public class RequestListActivity extends BaseActivity {
         friendName.setText("昵称：" + contacts.getName());
         friendMotoo.setText("个性签名：" + contacts.getMotto());
 
+        if (User.USERINSTANCE.friendsId.contains(contacts.getId())) {
+            btn_agree.setVisibility(View.INVISIBLE);
+            btn_reject.setVisibility(View.INVISIBLE);
+            result.setText("已同意");
+        }
+
         btn_agree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AddFriendsMessage addFriendsMessage = new AddFriendsMessage(id, contacts.getId(), "agree");
                 client.sendMsg(addFriendsMessage);
-                Log.d("requestlist", "fa song agree " + contacts.getId());
                 btn_agree.setVisibility(View.INVISIBLE);
                 btn_reject.setVisibility(View.INVISIBLE);
                 result.setText("已同意");

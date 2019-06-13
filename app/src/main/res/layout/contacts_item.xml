@@ -5,14 +5,14 @@
     android:orientation="vertical"
     android:paddingBottom="5dp"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="70dp">
 
 
     <ImageView
         android:id="@+id/contacts_image"
         android:src="@drawable/ic_user"
-        android:layout_width="60dp"
-        android:layout_height="60dp" />
+        android:layout_width="70dp"
+        android:layout_height="70dp" />
 
     <LinearLayout
         android:id="@+id/chat_linearLayout"
@@ -31,10 +31,21 @@
         <TextView
             android:id="@+id/contacts_temp"
             android:layout_width="match_parent"
+            android:textSize="15dp"
             android:layout_height="0dp"
             android:layout_weight="1"
             />
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/red_point"
+        android:visibility="invisible"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
+        android:src="@drawable/red_point"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 
     <View
         android:layout_below="@id/contacts_image"

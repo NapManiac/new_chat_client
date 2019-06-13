@@ -18,7 +18,7 @@ import java.util.List;
 
 public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     private List<Contacts> mList;
-
+    public ViewHolder holderFirst;
     class ViewHolder extends RecyclerView.ViewHolder {
         TextView textViewName;
         TextView textViewTemp;
@@ -41,17 +41,22 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.contacts_item, viewGroup, false);
         final ViewHolder holder = new ViewHolder(view);
+        if (holderFirst == null) {
+            holderFirst = holder;
+        }
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int position = holder.getAdapterPosition();
-
+                holder.redPoint.setVisibility(View.INVISIBLE);
+                MainActivity.mainActivity.redPoint2 = false;
                 Contacts contacts = mList.get(position);
                 Intent intent = new Intent(MainActivity.mainActivity, ChatWithOthersActivity.class);
                 intent.putExtra("id", contacts.getId());
                 MainActivity.mainActivity.startActivity(intent);
             }
         });
+
 
         return holder;
     }
@@ -61,10 +66,28 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         Contacts contacts = mList.get(i);
         viewHolder.textViewName.setText(contacts.getName());
         viewHolder.textViewTemp.setText(contacts.getTemp());
+        if (MainActivity.mainActivity.redPoint2) {
+            viewHolder.redPoint.setVisibility(View.VISIBLE);
+
+        }
+
     }
+
+
+
 
     @Override
     public int getItemCount() {
         return mList.size();
     }
+
+    public boolean setRedPoint() {
+        if (holderFirst != null) {
+            holderFirst.redPoint.setVisibility(View.VISIBLE);
+            return true;
+        }
+        return false;
+    }
+
+
 }

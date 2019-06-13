@@ -30,6 +30,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
             textViewName = view.findViewById(R.id.contacts_name);
             redPoint = view.findViewById(R.id.red_point);
             imageView = view.findViewById(R.id.contacts_image);
+
         }
     }
 
@@ -73,11 +74,12 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         Contacts contacts = mList.get(i);
         viewHolder.textViewName.setText(contacts.getName());
         if (i == 0) {
-            viewHolder.imageView.setVisibility(View.INVISIBLE);
+//            viewHolder.imageView.setVisibility(View.INVISIBLE);
+            viewHolder.imageView.setImageResource(R.drawable.ic_new_friend);
             viewHolder.textViewName.setText("新朋友");
-            if (MainActivity.mainActivity.redPoint) {
+            if (MainActivity.mainActivity.redPoint1) {
                 setRedPoint();
-                MainActivity.mainActivity.redPoint = false;
+                MainActivity.mainActivity.redPoint1 = false;
             }
         }
     }

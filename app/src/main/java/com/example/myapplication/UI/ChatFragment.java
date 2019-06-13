@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.myapplication.Adapter.ChatAdapter;
+import com.example.myapplication.MainActivity;
 import com.example.myapplication.NettyClient.User;
 import com.example.myapplication.R;
 
@@ -23,7 +24,6 @@ public class ChatFragment extends Fragment {
     private ChatAdapter chatAdapter;
     private List<Contacts> mList;
     private RecyclerView recyclerView;
-
     public static ChatFragment chatFragment;
 
     public ChatFragment() {
@@ -34,6 +34,8 @@ public class ChatFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+        MainActivity.houtai += 1;
+
         View view =inflater.inflate(R.layout.chat_frag, container,false);
         mList = getContactsList();
         recyclerView = view.findViewById(R.id.chat_recycler_view);
@@ -43,6 +45,12 @@ public class ChatFragment extends Fragment {
         chatAdapter = new ChatAdapter(mList);
         recyclerView.setAdapter(chatAdapter);
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        MainActivity.houtai -= 1;
     }
 
     public List<Contacts> getContactsList() {
@@ -61,6 +69,7 @@ public class ChatFragment extends Fragment {
             chatAdapter.notifyItemChanged(0);
             mList.remove(contacts);
             mList.add(0, contacts);
+
         } else {
             Log.d("addAdapter", contacts.getName());
             mList.add(0, contacts);
@@ -69,6 +78,14 @@ public class ChatFragment extends Fragment {
             chatAdapter.notifyItemChanged(0);
         }
 
+    }
+
+    public boolean setRedPoint() {
+        if (chatAdapter != null) {
+            chatAdapter.setRedPoint();
+            return true;
+        }
+        return false;
     }
 
 }

@@ -1,12 +1,21 @@
 package com.example.myapplication;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -26,6 +35,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends BaseActivity {
+
+    public static int houtai = 0;
+    private String notifi_id = "channel_1";
+    int importance = NotificationManager.IMPORTANCE_HIGH;
 
     public static ChatFragment chatFragment;
     public static MailListFragment mailListFragment;
@@ -47,13 +60,26 @@ public class MainActivity extends BaseActivity {
     public static int ADD_FRIEND = 24;
 
 
-    public boolean redPoint = false;//红点是否需要亮
+    public boolean redPoint1 = false;//新朋友红点是否需要亮
+    public boolean redPoint2 = false;//新消息红点是否需要亮
 
     public static MainActivity mainActivity;
 
     public MainActivity() {
         mainActivity = this;
     }
+
+//    @Override
+//    protected void onStart() {
+//        super.onStart();
+//        houtai += 1;
+//    }
+//
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        houtai -= 1;
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +131,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private Handler msghandler = new Handler() {
+        @RequiresApi(api = Build.VERSION_CODES.O)
         @Override
         public void handleMessage(Message msg) {
             Contacts contacts;
@@ -134,8 +161,8 @@ public class MainActivity extends BaseActivity {
                     User.USERINSTANCE.friendRequest.add(contacts.getId());
                     User.USERINSTANCE.friendsInfo.put(contacts.getId(), contacts);
                 }
-                if(!MailListFragment.mailListFragment.setRedPoint()) {
-                    redPoint = true;
+                if (!MailListFragment.mailListFragment.setRedPoint()) {
+                    redPoint1 = true;
                 }
             } else if (msg.what == ADD_FRIEND) {
                 String string = (String) msg.getData().get("id");
@@ -148,6 +175,13 @@ public class MainActivity extends BaseActivity {
             } else if (msg.what == SHOW_CHAT) {
                 String string = (String) msg.getData().get("sendId");
                 String stringMsg = (String) msg.getData().get("msg");
+                if (houtai == 0) {
+                    try {
+                        addNotification(0, string, stringMsg);
+                    } catch (Exception e) {
+
+                    }
+                }
 
                 User.USERINSTANCE.friendsInfo.get(string).setTemp(stringMsg);
 
@@ -160,6 +194,9 @@ public class MainActivity extends BaseActivity {
                 } else {
                     ChatWithOthersActivity.chatWithOthersActivity.addAdapter(string, new Msg(stringMsg, Msg.TYPE_RECEIVED));
                 }
+                if (ChatFragment.chatFragment.setRedPoint()) {
+                    redPoint2 = true;
+                }
 
                 ChatFragment.chatFragment.addAdapter(User.USERINSTANCE.friendsInfo.get(string));
             }
@@ -170,4 +207,46 @@ public class MainActivity extends BaseActivity {
     public Handler getMsghandler() {
         return msghandler;
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(Intent.ACTION_MAIN);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        i.addCategory(Intent.CATEGORY_HOME);
+        startActivity(i);
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void addNotification(int type, String title, String content) {
+        PendingIntent pi = null;
+        if (type == 0) { //聊天消息
+            Intent intent = new Intent(this, ChatWithOthersActivity.class);
+            intent.putExtra("id", title);
+            pi = PendingIntent.getActivity(this, 0, intent, 0);
+        }
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        NotificationChannel notificationChannel;
+        try {
+            notificationChannel = new NotificationChannel(notifi_id, "test", importance);
+            notificationManager.createNotificationChannel(notificationChannel);
+        } catch (NoClassDefFoundError error) {
+
+        }
+
+        Notification notification = new NotificationCompat.Builder(this, notifi_id)
+                .setContentTitle(title)
+                .setContentText(content)
+                .setWhen(System.currentTimeMillis())
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_user))
+                .setContentIntent(pi)
+                .setVibrate(new long[] {0, 500})
+                .setLights(Color.GREEN, 1000, 1000)
+                .setPriority(NotificationCompat.PRIORITY_MAX)
+                .build();
+
+        notificationManager.notify(1, notification);
+    }
+
 }

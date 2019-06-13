@@ -2,15 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/contacts_adapter"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="70dp"
     android:orientation="horizontal"
     android:paddingBottom="5dp">
 
 
     <ImageView
         android:id="@+id/contacts_image"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         android:src="@drawable/ic_user" />
 
 
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
 
         android:paddingTop="5dp"
-        android:textSize="20dp" />
+        android:textSize="25dp" />
 
     <ImageView
 
