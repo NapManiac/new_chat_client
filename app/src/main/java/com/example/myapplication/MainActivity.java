@@ -177,7 +177,7 @@ public class MainActivity extends BaseActivity {
             } else if (msg.what == SHOW_CHAT) {
                 String string = (String) msg.getData().get("sendId");
                 String stringMsg = (String) msg.getData().get("msg");
-                if ((houtai == 0) || (houtai2 == 0 && houtai == 0) || (houtai == 0 && houtai1 == 0)) {
+                if ((houtai == 0 && houtai2 == 0) || (houtai == 0 && houtai1 == 1) || (houtai1 == 0 && houtai2 == 0)) {
                     try {
                         addNotification(0, string, stringMsg);
                     } catch (Exception e) {
