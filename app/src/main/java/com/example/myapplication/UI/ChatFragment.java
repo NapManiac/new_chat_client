@@ -88,4 +88,10 @@ public class ChatFragment extends Fragment {
         return false;
     }
 
+    public void cancelRedPoint() {
+        if (chatAdapter != null) {
+            chatAdapter.cancelRedPoint();
+        }
+    }
+
 }

@@ -22,12 +22,14 @@ public class RegisterActivity extends BaseActivity {
 
         final EditText id = findViewById(R.id.id);
         final EditText password = findViewById(R.id.password);
+        final EditText name = findViewById(R.id.name);
+        final EditText motto = findViewById(R.id.motto);
 
         Button button = findViewById(R.id.register);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RegisterMessage registerMessage = new RegisterMessage("", "server", id.getText().toString(), password.getText().toString());
+                RegisterMessage registerMessage = new RegisterMessage("", "server", id.getText().toString(), password.getText().toString(), name.getText().toString(), motto.getText().toString());
                 send(registerMessage);
             }
         });

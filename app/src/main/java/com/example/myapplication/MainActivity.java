@@ -37,6 +37,8 @@ import java.util.List;
 public class MainActivity extends BaseActivity {
 
     public static int houtai = 0;
+    public static int houtai1 = 0;
+    public static int houtai2 = 0;
     private String notifi_id = "channel_1";
     int importance = NotificationManager.IMPORTANCE_HIGH;
 
@@ -69,17 +71,17 @@ public class MainActivity extends BaseActivity {
         mainActivity = this;
     }
 
-//    @Override
-//    protected void onStart() {
-//        super.onStart();
-//        houtai += 1;
-//    }
-//
-//    @Override
-//    protected void onStop() {
-//        super.onStop();
-//        houtai -= 1;
-//    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        houtai1 += 1;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        houtai1 -= 1;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,7 +177,7 @@ public class MainActivity extends BaseActivity {
             } else if (msg.what == SHOW_CHAT) {
                 String string = (String) msg.getData().get("sendId");
                 String stringMsg = (String) msg.getData().get("msg");
-                if (houtai == 0) {
+                if ((houtai == 0) || (houtai2 == 0 && houtai == 0) || (houtai == 0 && houtai1 == 0)) {
                     try {
                         addNotification(0, string, stringMsg);
                     } catch (Exception e) {
@@ -188,7 +190,7 @@ public class MainActivity extends BaseActivity {
                 if (!User.USERINSTANCE.chatList.containsKey(string))
                     User.USERINSTANCE.chatList.put(string, new ArrayList<Msg>());
 
-                if (ChatWithOthersActivity.chatWithOthersActivity == null) {
+                if (ChatWithOthersActivity.chatWithOthersActivity == null || !ChatWithOthersActivity.chatWithOthersActivity.contacts.getId().equals(string)) {
                     List<Msg> list = User.USERINSTANCE.chatList.get(string);
                     list.add(new Msg(stringMsg, Msg.TYPE_RECEIVED));
                 } else {

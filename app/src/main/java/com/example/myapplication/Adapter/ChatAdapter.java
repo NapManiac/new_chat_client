@@ -89,5 +89,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         return false;
     }
 
+    public void cancelRedPoint() {
+        if (holderFirst != null) {
+            holderFirst.redPoint.setVisibility(View.INVISIBLE);
+        }
+    }
 
 }

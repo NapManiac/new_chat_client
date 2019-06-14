@@ -158,7 +158,6 @@ public class LoginActivity extends BaseActivity {
     public void connect(){
         try {
             // 创建一个ChatClient实例
-//            client = new ChatClient(host.getText().toString(),8888);
 //            client = new ChatClient("192.168.1.101",8888);
             client = new ChatClient("94.191.64.27",8888);
             // 开始尝试连接服务器
@@ -167,7 +166,5 @@ public class LoginActivity extends BaseActivity {
             e.printStackTrace();
         }
     }
-
-
 
 }

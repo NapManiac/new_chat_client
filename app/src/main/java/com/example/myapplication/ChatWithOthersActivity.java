@@ -14,6 +14,7 @@ import com.example.myapplication.Adapter.MsgAdapter;
 import com.example.myapplication.Base.BaseActivity;
 import com.example.myapplication.Entity.ChatMessage;
 import com.example.myapplication.NettyClient.User;
+import com.example.myapplication.UI.ChatFragment;
 import com.example.myapplication.UI.Contacts;
 import com.example.myapplication.UI.Msg;
 
@@ -26,11 +27,23 @@ public class ChatWithOthersActivity extends BaseActivity {
     private Button send;
     private RecyclerView msgRecyckerView;
     private MsgAdapter adapter;
-    private Contacts contacts;
+    public Contacts contacts;
     public static ChatWithOthersActivity chatWithOthersActivity;
 
     public ChatWithOthersActivity() {
         chatWithOthersActivity = this;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        MainActivity.houtai2 += 1;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        MainActivity.houtai2 -= 1;
     }
 
     @Override
@@ -73,8 +86,8 @@ public class ChatWithOthersActivity extends BaseActivity {
 
 
                     User.USERINSTANCE.friendsInfo.get(friendId).setTemp(content);
-
-
+                    ChatFragment.chatFragment.addAdapter(User.USERINSTANCE.friendsInfo.get(friendId));
+                    ChatFragment.chatFragment.cancelRedPoint();
                     adapter.notifyItemInserted(msgList.size() - 1); // 当有新消息时，
                     msgRecyckerView.scrollToPosition(msgList.size() - 1);
                     inputText.setText(""); // 清空输入框中的内容
@@ -96,6 +109,11 @@ public class ChatWithOthersActivity extends BaseActivity {
         msgRecyckerView.scrollToPosition(msgList.size() - 1);
     }
 
+    @Override
+    public void onBackPressed() {
 
+        super.onBackPressed();
+
+    }
 }
 

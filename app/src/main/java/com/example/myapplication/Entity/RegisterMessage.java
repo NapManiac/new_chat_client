@@ -15,6 +15,10 @@ public class RegisterMessage extends Packet {
 
     private String id = "";
 
+    private String name = "";
+
+    private String motto = "";
+
     private String password = "";
 
     public String getMessage() {
@@ -35,6 +39,14 @@ public class RegisterMessage extends Packet {
         this.id = id;
         this.password = password;
     }
+
+    public RegisterMessage(String sendUser, String receiveUser, String id, String password, String name, String motto) {
+        super(Util.MSG_REGISTER, sendUser, receiveUser);
+        this.id = id;
+        this.password = password;
+        this.name = name;
+        this.motto = motto;
+    }
     @Override
     public byte[] encode() throws UnsupportedEncodingException {
         byte[] superEncode = super.encodeInit();
@@ -46,7 +58,10 @@ public class RegisterMessage extends Packet {
         int lenId = id.getBytes().length;
         int lenPassword = password.getBytes().length;
 
-        byte[] buffer = new byte[superMsg + lenId + lenPassword + 4 * 2];
+        int lenName = name.getBytes().length;
+        int lenMotto = motto.getBytes().length;
+
+        byte[] buffer = new byte[superMsg + lenId + lenPassword + 4 * 4 + lenName + lenMotto];
         //父类的编码
         System.arraycopy(superEncode, 0, buffer, 0, superEncode.length);
 
@@ -59,8 +74,20 @@ public class RegisterMessage extends Packet {
         System.arraycopy(Util.int2bytes(lenPassword), 0, buffer, pos, 4);
         pos += 4;
 
+        System.arraycopy(Util.int2bytes(lenName), 0, buffer, pos, 4);
+        pos += 4;
+
+        System.arraycopy(Util.int2bytes(lenMotto), 0, buffer, pos, 4);
+        pos += 4;
+
         System.arraycopy(id.getBytes(), 0, buffer, pos, lenId);
         System.arraycopy(password.getBytes(), 0, buffer, pos + lenId, lenPassword);
+        System.arraycopy(name.getBytes(), 0, buffer, pos + lenId + lenPassword, lenName);
+        System.arraycopy(motto.getBytes(), 0, buffer, pos + lenId + lenPassword + lenName, lenMotto);
+
+
+
+
 
         return buffer;
     }
